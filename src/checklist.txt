@@ -1,0 +1,12 @@
+| Nr  | Check name                                                                                       | Status         |
+| --- | ------------------------------------------------------------------------------------------------ | -------------- |
+| 1   | Returns true for complex password with digits and special chars, eng characters                  | Passed         |
+| 2   | Returns true for complex password with digits and special chars, rus characters                  | Passed         |
+| 3   | Returns false, no digits in password                                                             | Passed         |
+| 4   | Returns false, no special chars in password                                                      | Passed         |
+| 5   | Returns false, password shorter than 8 chars                                                     | Passed         |
+| 6   | Returns false, password input is empty                                                           | Passed         |
+| 7   | Returns true, complex password contains only special chars and digits                            | Passed         |
+| 8   | Returns true, complex password with spaces, characters, special chars and digits                 | Passed         |
+| 9   | Returns true, complex password with only upper register eng characters, special chars and digits | Passed         |
+| 10  | Returns true, complex password with only upper register rus characters, special chars and digits | Passed         |
