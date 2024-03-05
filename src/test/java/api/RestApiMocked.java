@@ -203,6 +203,7 @@ public class RestApiMocked {
         orderDtoMocked.setComment(faker.lorem().sentence());
         orderDtoMocked.setId(faker.number().numberBetween(1,1000));
 
+
         given()
                 .header("Content-Type", "application/json")
                 .log()
