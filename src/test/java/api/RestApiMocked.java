@@ -1,12 +1,19 @@
 package api;
 import static io.restassured.RestAssured.*;
+
+import com.github.javafaker.Faker;
+import com.google.gson.Gson;
+import dto.OrderDtoMocked;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import utils.RandomDataGeneration;
 
 public class RestApiMocked {
     @BeforeAll
@@ -147,6 +154,66 @@ public class RestApiMocked {
                 .log()
                 .all()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+    @ParameterizedTest
+    @CsvSource({
+            "12345, example1",
+            "6789, example2",
+            "123456789, example3",
+    })
+     void testLoginWithUserNameAndPasswordToGetApiKeyAndStatusCodeIsOk(String username, String password){
+        given()
+                .queryParam("username", username)
+                .queryParam("password", password)
+                .log()
+                .all()
+                .when()
+                .get("/test-orders")
+                .then()
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_OK);
+    }
+    @Test
+    public void testGetRequestWithoutUsernameAndPasswordAndStatusCodeIsBadRequest(){
+        given()
+                .log()
+                .all()
+                .when()
+                .get("/test-orders")
+                .then()
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+
+
+    @Test
+    public void createOrderAndCheckResponseCodeIsOk(){
+//        OrderDtoMocked orderDtoMocked = new OrderDtoMocked("OPEN", 0,
+//                "customer 1", "54892321", "test", 0);
+        Faker faker = new Faker();
+        OrderDtoMocked orderDtoMocked = new OrderDtoMocked();
+
+        orderDtoMocked.setStatus("OPEN");
+        orderDtoMocked.setCourierId(faker.number().numberBetween(1,1000));
+        orderDtoMocked.setCustomerName(faker.name().fullName());
+        orderDtoMocked.setCustomerPhone(faker.phoneNumber().cellPhone());
+        orderDtoMocked.setComment(faker.lorem().sentence());
+        orderDtoMocked.setId(faker.number().numberBetween(1,1000));
+
+        given()
+                .header("Content-Type", "application/json")
+                .log()
+                .all()
+                .when()
+                .body(new Gson().toJson(orderDtoMocked))
+                .post("/test-orders")
+                .then()
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_OK);
     }
 
 
