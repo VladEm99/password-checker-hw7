@@ -191,8 +191,7 @@ public class RestApiMocked {
 
     @Test
     public void createOrderAndCheckResponseCodeIsOk(){
-//        OrderDtoMocked orderDtoMocked = new OrderDtoMocked("OPEN", 0,
-//                "customer 1", "54892321", "test", 0);
+        //creating new Faker instance
         Faker faker = new Faker();
         OrderDtoMocked orderDtoMocked = new OrderDtoMocked();
 
@@ -211,6 +210,36 @@ public class RestApiMocked {
                 .when()
                 .body(new Gson().toJson(orderDtoMocked))
                 .post("/test-orders")
+                .then()
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_OK);
+    }
+    @ParameterizedTest
+    @ValueSource(ints = {1,5,9,10})
+    public void updateOrderMockedAndCheckResponseCodeIsOk(int orderId){
+
+        //creating new Faker instance
+        Faker faker = new Faker();
+
+        OrderDtoMocked orderDtoMocked = new OrderDtoMocked();
+
+        orderDtoMocked.setStatus("OPEN");
+        orderDtoMocked.setCourierId(faker.number().numberBetween(1,1000));
+        orderDtoMocked.setCustomerName(faker.name().fullName());
+        orderDtoMocked.setCustomerPhone(faker.phoneNumber().cellPhone());
+        orderDtoMocked.setComment(faker.lorem().sentence());
+        orderDtoMocked.setId(faker.number().numberBetween(1,1000));
+
+
+        given()
+                .header("Content-Type", "application/json")
+                .header("api_key", "1234567890123456")
+                .log()
+                .all()
+                .when()
+                .body(new Gson().toJson(orderDtoMocked))
+                .put("/test-orders/{orderId}", orderId)
                 .then()
                 .log()
                 .all()

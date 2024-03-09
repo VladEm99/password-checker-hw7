@@ -19,5 +19,6 @@ Check list:
 | 4   | Returns 401 for DELETE method request with invalid API key (16 chars)                             | Passed         |
 | 5   | Returns 400 for DELETE method request with no given API key in headers (bad request)              | Passed         |
 | 6   | Returns 404 for DELETE method request with invalid ID (order not found, ID - char instead of int) | Failed         |
-| 6   | Returns 200 for GET method request with username and password in query params, returns API key    | Passed         |
-| 6   | Returns 400 for GET method request without username and password, doesn't return API key           | Failed         |
+| 7   | Returns 200 for GET method request with username and password in query params, returns API key    | Passed         |
+| 9   | Returns 400 for GET method request without username and password, doesn't return API key          | Failed         |
+| 10  | Returns 200 for PUT method request with valid generated data                                      | Passed         |
